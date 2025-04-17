@@ -132,6 +132,5 @@
 │   └── README.md
 ├── scripts/
 │   └── update_progress.py
-├── requirements.txt
 └── README.md
 
