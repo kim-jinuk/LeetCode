@@ -115,12 +115,23 @@
 ---
 
 ## 🗂️ 디렉토리 구조
+```bash
 .
 ├── 1.Two_Sum/
-│   ├── solution.py
-│   └── README.md
-├── 121.Best_Time_to_Buy_and_Sell_Stock/
-│   ├── solution.py
-│   └── README.md
-├── ...
-└── README.md  ←← 현재 파일
+│   ├── solution.py
+│   ├── README.md
+│   └── test.py
+├── 2.Add_Two_Numbers/
+│   ├── solution.py
+│   └── README.md
+├── 70.Climbing_Stairs/
+│   ├── solution.py
+│   └── README.md
+├── 104.Maximum_Depth_of_Binary_Tree/
+│   ├── solution.py
+│   └── README.md
+├── scripts/
+│   └── update_progress.py
+├── requirements.txt
+└── README.md
+
