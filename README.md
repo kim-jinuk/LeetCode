@@ -23,7 +23,7 @@
 <details>
 <summary>📌 배열 (Array)</summary>
 
-
+- [LeetCode 56. merge intervals](./0056-merge-intervals/)
 
 </details>
 
