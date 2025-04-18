@@ -35,9 +35,8 @@
 </details>
 
 <details>
-<summary>📌 연결 리스트 (Linked List)</summary>  
+<summary>📌 연결 리스트 (Linked List)</summary>
 
-- [LeetCode 148. sort list](./0148-sort-list/)
 - [LeetCode 148. sort list](./0148-sort-list/)
 
 </details>
