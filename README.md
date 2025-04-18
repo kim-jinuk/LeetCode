@@ -23,81 +23,77 @@
 <details>
 <summary>📌 배열 (Array)</summary>
 
-- [LeetCode 1. Two Sum](./1.Two_Sum/)
-- [LeetCode 121. Best Time to Buy and Sell Stock](./121.Best_Time_to_Buy_and_Sell_Stock/)
-- [LeetCode 561. Array Partition I](./561.Array_Partition_I/)
+
 
 </details>
 
 <details>
 <summary>📌 문자열 (String)</summary>
 
-- [LeetCode 5. Longest Palindromic Substring](./5.Longest_Palindromic_Substring/)
-- [LeetCode 49. Group Anagrams](./49.Group_Anagrams/)
-- [LeetCode 937. Reorder Data in Log Files](./937.Reorder_Data_in_Log_Files/)
+
 
 </details>
 
 <details>
 <summary>📌 연결 리스트 (Linked List)</summary>
 
-- [LeetCode 2. Add Two Numbers](./2.Add_Two_Numbers/)
-- [LeetCode 206. Reverse Linked List](./206.Reverse_Linked_List/)
-- [LeetCode 21. Merge Two Sorted Lists](./21.Merge_Two_Sorted_Lists/)
+- [LeetCode 148. sort list](./0148-sort-list/)
 
 </details>
 
 <details>
 <summary>📌 스택/큐 (Stack / Queue)</summary>
 
-- [LeetCode 20. Valid Parentheses](./20.Valid_Parentheses/)
-- [LeetCode 739. Daily Temperatures](./739.Daily_Temperatures/)
-- [LeetCode 225. Implement Stack using Queues](./225.Implement_Stack_using_Queues/)
+
 
 </details>
 
 <details>
 <summary>📌 해시 테이블 (Hash Table)</summary>
 
-- [LeetCode 387. First Unique Character in a String](./387.First_Unique_Character_in_a_String/)
-- [LeetCode 146. LRU Cache](./146.LRU_Cache/)
-- [LeetCode 819. Most Common Word](./819.Most_Common_Word/)
+
 
 </details>
 
 <details>
-<summary>📌 이진 트리 (Binary Tree)</summary>
+<summary>📌 트리 (Tree)</summary>
 
-- [LeetCode 104. Maximum Depth of Binary Tree](./104.Maximum_Depth_of_Binary_Tree/)
-- [LeetCode 226. Invert Binary Tree](./226.Invert_Binary_Tree/)
-- [LeetCode 617. Merge Two Binary Trees](./617.Merge_Two_Binary_Trees/)
+
 
 </details>
 
 <details>
 <summary>📌 그래프 & BFS/DFS (Graph)</summary>
 
-- [LeetCode 200. Number of Islands](./200.Number_of_Islands/)
-- [LeetCode 207. Course Schedule](./207.Course_Schedule/)
-- [LeetCode 433. Minimum Genetic Mutation](./433.Minimum_Genetic_Mutation/)
+
+
+</details>
+
+<details>
+<summary>📌 그리디 알고리즘</summary>
+
+
+
+</details>
+
+<details>
+<summary>📌 분할 정복</summary>
+
+
 
 </details>
 
 <details>
 <summary>📌 다이나믹 프로그래밍 (Dynamic Programming)</summary>
 
-- [LeetCode 70. Climbing Stairs](./70.Climbing_Stairs/)
-- [LeetCode 198. House Robber](./198.House_Robber/)
-- [LeetCode 322. Coin Change](./322.Coin_Change/)
+
 
 </details>
 
 <details>
-<summary>📌 기타 (Bit, Heap, Greedy…)</summary>
+<summary>📌 기타 (Binary search, Sliding window, Heap, …)</summary>
 
-- [LeetCode 191. Number of 1 Bits](./191.Number_of_1_Bits/)
-- [LeetCode 215. Kth Largest Element in an Array](./215.Kth_Largest_Element_in_an_Array/)
-- [LeetCode 621. Task Scheduler](./621.Task_Scheduler/)
+
 
 </details>
 
@@ -119,8 +115,7 @@
 .
 ├── 1.Two_Sum/
 │   ├── solution.py
-│   ├── README.md
-│   └── test.py
+│   └── README.md
 ├── 2.Add_Two_Numbers/
 │   ├── solution.py
 │   └── README.md
