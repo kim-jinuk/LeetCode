@@ -17,4 +17,4 @@ class Solution:
                 for dx, dy in move:
                     if 0 <= x + dx < row and 0 <= y + dy < column and (x + dx, y + dy) not in effort:
                         value = abs(heights[x + dx][y + dy] - heights[x][y])
-                        heapq.heappush(Q, (max(e, value), x + dx, y + dy))
+                        heapq.heappush(Q, (value, x + dx, y + dy))
