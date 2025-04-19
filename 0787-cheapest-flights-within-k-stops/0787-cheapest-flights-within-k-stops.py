@@ -1,18 +1,36 @@
+import collections, heapq
 from typing import List
 
 class Solution:
     def findCheapestPrice(
-        self, n: int, flights: List[List[int]], src: int, dst: int, K: int
+        self,
+        n: int,
+        flights: List[List[int]],
+        src: int,
+        dst: int,
+        K: int
     ) -> int:
-        dp = [float('inf')] * n
-        dp[src] = 0
+        # 그래프 구성
+        graph = collections.defaultdict(list)
+        for u, v, w in flights:
+            graph[u].append((v, w))
 
-        # K번 경유 → K+1번 벨만‑포드 반복
-        for _ in range(K + 1):
-            tmp = dp.copy()
-            for u, v, w in flights:
-                if dp[u] + w < tmp[v]:
-                    tmp[v] = dp[u] + w
-            dp = tmp
+        # best[도시][경유횟수] = 최소 비용
+        best = [[float('inf')] * (K + 2) for _ in range(n)]
+        best[src][0] = 0
 
-        return dp[dst] if dp[dst] < float('inf') else -1
+        pq = [(0, src, 0)]  # (비용, 도시, 사용한 경유 횟수)
+        while pq:
+            cost, u, stops = heapq.heappop(pq)
+            if u == dst:
+                return cost
+            if stops == K + 1 or cost > best[u][stops]:
+                continue
+            for v, w in graph[u]:
+                nc = cost + w
+                # stops+1번 경유해서 v에 올 때 비용이 더 싸면 갱신
+                if nc < best[v][stops + 1]:
+                    best[v][stops + 1] = nc
+                    heapq.heappush(pq, (nc, v, stops + 1))
+
+        return -1
