@@ -23,7 +23,7 @@
 <details>
 <summary>📌 배열 (Array)</summary>
 
-- [LeetCode 56. merge intervals](./0056-merge-intervals/)
+- [LeetCode 56. merge intervals](./Category_array/0056-merge-intervals/)
 
 </details>
 
@@ -37,7 +37,7 @@
 <details>
 <summary>📌 연결 리스트 (Linked List)</summary>
 
-- [LeetCode 148. sort list](./0148-sort-list/)
+- [LeetCode 148. sort list](./Category_linked_list/0148-sort-list/)
 
 </details>
 
@@ -65,7 +65,10 @@
 <details>
 <summary>📌 그래프 & BFS/DFS (Graph)</summary>
 
-
+- [LeetCode 0743. network delay time](./Category_graph/0743-network-delay-time/)
+- [LeetCode 0787. cheapest flights within k stops](./Category_graph/0787-cheapest-flights-within-k-stops/)
+- [LeetCode 1514. path with maximum probability](./Category_graph/1514-path-with-maximum-probability/)
+- [LeetCode 1631. path with minimum effort](./Category_graph/1631-path-with-minimum-effort/)
 
 </details>
 
@@ -113,18 +116,24 @@
 ## 🗂️ 디렉토리 구조
 ```bash
 .
-├── 1.Two_Sum/
-│   ├── solution.py
-│   └── README.md
-├── 2.Add_Two_Numbers/
-│   ├── solution.py
-│   └── README.md
-├── 70.Climbing_Stairs/
-│   ├── solution.py
-│   └── README.md
-├── 104.Maximum_Depth_of_Binary_Tree/
-│   ├── solution.py
-│   └── README.md
+├── Category_array/
+│   └── 0056-merge-intervals
+│       ├── solution.py
+│       └── README.md
+├── Category_graph/
+│   ├── 0743-network-delay-time
+│   │   ├── solution.py
+│   │   └── README.md
+│   ├── 0787-cheapest-flights-within-k-stops
+│   │   ├── solution.py
+│   │   └── README.md
+│   └── 0787-cheapest-flights-within-k-stops
+│       ├── solution.py
+│       └── README.md
+├── Category_linked_list/
+│   └── 0148-sort-list
+│       ├── solution.py
+│       └── README.md
 ├── scripts/
 │   └── update_progress.py
 └── README.md
