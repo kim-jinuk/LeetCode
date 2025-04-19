@@ -15,6 +15,6 @@ class Solution:
             if (x, y) not in effort:
                 effort[(x, y)] = e
                 for dx, dy in move:
-                    if 0 <= x + dx < row and 0 <= y + dy < column:
+                    if 0 <= x + dx < row and 0 <= y + dy < column and (x + dx, y + dy) not in effort:
                         value = abs(heights[x + dx][y + dy] - heights[x][y])
                         heapq.heappush(Q, (max(e, value), x + dx, y + dy))
