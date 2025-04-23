@@ -10,13 +10,12 @@ class Solution:
         s = deque(sorted(s))
 
         for i in g:
-            if not s:
+            if not s or i > max(s):
                 return result
-            if i <= s[0]:
-                result += 1
+
+            while (i > s[0]):
                 s.popleft()
-            else:
-                while (g[0] > s[0]):
-                    s.popleft()
-        
+            result += 1
+            s.popleft()
+
         return result
