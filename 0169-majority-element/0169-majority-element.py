@@ -1,7 +1,10 @@
-from collections import Counter
+import collections
 
 class Solution:
     def majorityElement(self, nums: List[int]) -> int:
-        a = Counter(nums)
-
-        return a.most_common(1)[0][0]
+        counts = collections.defaultdict(int)
+        for num in nums:
+            if counts[num] == 0:
+                counts[num] = nums.count(num)
+            if counts[num] > (len(nums) // 2):
+                return num
