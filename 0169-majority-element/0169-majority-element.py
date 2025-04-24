@@ -7,7 +7,8 @@ class Solution:
         if len(nums) == 1:
             return nums[0]
         
-        a = self.majorityElement(nums[:len(nums) // 2])
-        b = self.majorityElement(nums[len(nums) // 2:])
+        half = len(nums) // 2
+        a = self.majorityElement(nums[:half])
+        b = self.majorityElement(nums[half:])
 
-        return [b, a][nums.count(a) > len(nums) // 2]
+        return [b, a][nums.count(a) > half]
