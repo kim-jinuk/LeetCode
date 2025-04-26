@@ -1,10 +1,13 @@
+import collections
+
 class Solution:
+    dp = collections.defaultdict(int)
     def climbStairs(self, n: int) -> int:
         if n <= 2:
             return n
+        
+        if self.dp[n]:
+            return self.dp[n]
 
-        first = 1
-        second = 2
-        for i in range(3, n + 1):
-            first, second = second, first + second
-        return second
+        self.dp[n] = self.climbStairs(n - 1) + self.climbStairs(n - 2)
+        return self.dp[n]
