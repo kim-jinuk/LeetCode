@@ -1,121 +1,113 @@
 #!/usr/bin/env python3
 """update_progress.py
 
-Run this script from the repository root. It scans every folder whose name
-starts with ``Category_`` (e.g. ``Category_Array``) and treats every
-source‑code file inside (`.cpp`, `.py`, `.java`, …) as a solved LeetCode
-problem. It then **rewrites** two sections of the top‑level ``README.md``:
+Usage:  python script/update_progress.py
 
-1. ``## 유형별 문제 분류`` – a table grouping problems by category
-2. ``## 진행 현황``       – overall solved count + per‑category stats
+* Scans every directory whose name starts with ``Category_`` and treats any
+  source-code file therein (``.cpp``, ``.py``, etc.) as a **solved LeetCode
+  problem**.
+* Rewrites **in‑place** the two designated sections of the top‑level
+  ``README.md`` _only_ if the headings already exist:
 
-If those headings do not yet exist in README, they are appended at the end.
+    ## 📂 유형별 문제 분류
+    ## 🧠 진행 현황
 
-The sections are delimited by the headings themselves, so everything between
-``## 유형별 문제 분류`` and the next heading of the same level will be
-automatically replaced.
+  If either heading is missing, the script aborts with an error instead of
+  silently appending content elsewhere. This guarantees the README layout
+  remains stable and predictable.
 """
 from __future__ import annotations
 
+import sys
 import os
 import re
-import sys
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Tuple
+
+# ────────────────────────────────────────────────
+# Settings
+# ────────────────────────────────────────────────
 
 ALLOWED_EXT = {
-    ".py",
-    ".cpp",
-    ".c",
-    ".cc",
-    ".cxx",
-    ".java",
-    ".js",
-    ".ts",
-    ".go",
-    ".rb",
-    ".rs",
-    ".swift",
+    ".py", ".cpp", ".c", ".cc", ".cxx", ".java", ".js", ".ts", ".go", ".rb", ".rs", ".swift"
 }
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Helpers
-# ──────────────────────────────────────────────────────────────────────────────
+HEAD_CATEGORIES = "📂 유형별 문제 분류"
+HEAD_PROGRESS = "🧠 진행 현황"
 
+# ────────────────────────────────────────────────
+# Helpers
+# ────────────────────────────────────────────────
 
 def gather_categories(repo_root: Path) -> Dict[str, List[Path]]:
-    """Return mapping {category: [file, ...]} for each Category_* folder."""
-    categories: Dict[str, List[Path]] = {}
-    for item in repo_root.iterdir():
-        if item.is_dir() and item.name.startswith("Category_"):
-            cat_name = item.name[len("Category_") :]
-            # Collect source files recursively
-            files = [f for f in item.rglob("*") if f.is_file() and f.suffix.lower() in ALLOWED_EXT]
-            categories[cat_name] = sorted(files, key=lambda p: p.name.lower())
-    return dict(sorted(categories.items()))  # alphabetical order
+    """Return {category_name: [files]} sorted alphabetically."""
+    cats: Dict[str, List[Path]] = {}
+    for p in repo_root.iterdir():
+        if p.is_dir() and p.name.startswith("Category_"):
+            name = p.name[len("Category_"):]
+            files = [f for f in p.rglob("*") if f.is_file() and f.suffix.lower() in ALLOWED_EXT]
+            cats[name] = sorted(files, key=lambda x: x.name.lower())
+    return dict(sorted(cats.items()))
 
 
-def make_md_link(path: Path, repo_root: Path) -> str:
-    """Convert a Path to a relative markdown link."""
-    rel = path.relative_to(repo_root).as_posix()
-    return f"[{path.stem}]({rel})"
+def md_link(file: Path, repo_root: Path) -> str:
+    rel = file.relative_to(repo_root).as_posix()
+    return f"[{file.stem}]({rel})"
 
 
-def build_category_table(categories: Dict[str, List[Path]], repo_root: Path) -> str:
-    """Build markdown table listing all problems in each category."""
-    lines: List[str] = ["| 유형 | 문제 수 | 문제 목록 |", "|------|---------|-----------|"]
-    for cat, files in categories.items():
-        links = "<br>".join(make_md_link(f, repo_root) for f in files) if files else "-"
+def build_category_table(cats: Dict[str, List[Path]], repo_root: Path) -> str:
+    lines = [
+        "| 유형 | 문제 수 | 문제 목록 |",
+        "|------|---------|-----------|",
+    ]
+    for cat, files in cats.items():
+        links = "<br>".join(md_link(f, repo_root) for f in files) if files else "-"
         lines.append(f"| {cat} | {len(files)} | {links} |")
     return "\n".join(lines)
 
 
-def build_progress_md(categories: Dict[str, List[Path]], repo_root: Path) -> str:
-    total = sum(len(v) for v in categories.values())
-    solved_line = f"**Solved:** {total} problems\n"
-    return solved_line + "\n" + build_category_table(categories, repo_root) + "\n"
+def build_progress_block(cats: Dict[str, List[Path]]) -> str:
+    total = sum(len(v) for v in cats.values())
+    per_cat = ", ".join(f"{k}: {len(v)}" for k, v in cats.items())
+    return (
+        f"현재까지 **{total}개** 문제 해결\n\n"
+        f"분류별 현황: {per_cat if per_cat else 'N/A'}\n"
+    )
 
 
-def replace_section(readme: str, heading: str, new_content: str) -> str:
-    """Replace the markdown section that starts with *heading* (e.g. '## Title').
-    The section goes until the next heading of the same level or EOF."""
+def replace_section(readme_text: str, heading: str, new_body: str) -> str:
+    """Replace the markdown heading section _in‑place_. Error if not found."""
     pattern = rf"(^## +{re.escape(heading)}.*?$)([\s\S]*?)(?=^## |\Z)"
     regex = re.compile(pattern, re.MULTILINE)
-    if regex.search(readme):
-        return regex.sub(rf"\1\n\n{new_content}\n", readme)
-    # Heading not found – append to EOF
-    return readme.rstrip() + f"\n\n## {heading}\n\n{new_content}\n"
+    match = regex.search(readme_text)
+    if not match:
+        sys.exit(f"[ERROR] Heading '## {heading}' not found in README.md")
+    start = match.group(1)
+    return regex.sub(f"{start}\n\n{new_body}\n", readme_text)
 
-
-# ──────────────────────────────────────────────────────────────────────────────
+# ────────────────────────────────────────────────
 # Main
-# ──────────────────────────────────────────────────────────────────────────────
+# ────────────────────────────────────────────────
 
 def main() -> None:
     repo_root = Path(__file__).resolve().parent.parent
-    readme_path = repo_root / "README.md"
+    readme = repo_root / "README.md"
 
-    if not readme_path.exists():
-        print("README.md not found in repo root", file=sys.stderr)
-        sys.exit(1)
+    if not readme.exists():
+        sys.exit("[ERROR] README.md not found at repository root.")
 
-    categories = gather_categories(repo_root)
+    cats = gather_categories(repo_root)
 
-    with readme_path.open("r", encoding="utf-8") as f:
-        readme_text = f.read()
+    with readme.open("r", encoding="utf-8") as fp:
+        text = fp.read()
 
-    # Update sections
-    readme_text = replace_section(
-        readme_text, "유형별 문제 분류", build_category_table(categories, repo_root)
-    )
-    readme_text = replace_section(
-        readme_text, "진행 현황", build_progress_md(categories, repo_root)
-    )
+    text = replace_section(text, HEAD_CATEGORIES, build_category_table(cats, repo_root))
+    text = replace_section(text, HEAD_PROGRESS, build_progress_block(cats))
 
-    with readme_path.open("w", encoding="utf-8", newline="\n") as f:
-        f.write(readme_text)
+    with readme.open("w", encoding="utf-8", newline="\n") as fp:
+        fp.write(text)
 
-    print("README.md updated successfully.")
+    print("README.md successfully updated ✅")
 
 
 if __name__ == "__main__":
